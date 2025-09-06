@@ -1,0 +1,369 @@
+Great — your current prompt is functional, but it leaves a lot of room for ambiguity. To make it effective as a zero-shot instruction prompt (so the most capable agent gives you exactly what you need), here’s a breakdown:
+
+⸻
+
+1. Issues with your current prompt
+	•	Ambiguous inputs: You say “I have a script” but don’t specify if the script is Bash, YAML manifests, Helm, or a combination.
+	•	No clear deliverables: You ask for “exact manual commands,” but don’t say you want oc equivalents for kubectl, validation commands, and rollout checks.
+	•	Validation unclear: Validation could mean pod readiness, service accessibility, logs, or hitting the app’s endpoint. Needs precision.
+	•	Cluster assumptions: Assumes the agent knows you’re logged into an OpenShift cluster with oc login. Should be stated.
+	•	Style: Needs step-by-step copy-pasteable commands, not general guidance.
+
+⸻
+
+2. Improved Zero-Shot Prompt (drop-in)
+
+Role:
+Act as a senior OpenShift/Kubernetes engineer. You are analyzing a folder that contains a script (YAML/manifest files + helper script) to deploy an LLM chatbot.
+
+Assumptions:
+	•	I can run both kubectl and oc commands.
+	•	I am already logged into an OpenShift cluster with oc login.
+	•	Container images are already built and available in a registry.
+	•	I want to deploy manually (not Helm or Operators).
+
+Deliverables (exact):
+	1.	Step-by-step manual commands to deploy the Kubernetes YAML into OpenShift.
+	•	Namespace/project creation.
+	•	Apply manifests (oc apply -f ...).
+	•	Any required secrets/configmaps.
+	2.	Validation commands after deployment:
+	•	Check pod status (oc get pods, oc describe pod, oc logs).
+	•	Check deployment rollout (oc rollout status).
+	•	Verify service (oc get svc, oc port-forward).
+	•	Verify external access via OpenShift Route (oc get route, curl).
+	3.	Equivalent kubectl vs oc usage notes (where they differ).
+	4.	Troubleshooting steps for common errors (image pull, CrashLoopBackOff, route not exposed).
+	5.	Keep explanations short, bullet-style, with commands ready to copy-paste.
+
+Constraints & style:
+	•	No assumptions about CI/CD pipelines.
+	•	Use oc wherever possible; mention if kubectl is identical.
+	•	Output should be structured with headings: Setup, Deploy, Validate, Troubleshoot.
+	•	All commands should be in fenced code blocks.
+
+If any file paths or image names are missing, state a sensible assumption and proceed.
+
+⸻
+
+3. Example of what the agent should output
+
+Setup
+
+oc new-project llm-chatbot || oc project llm-chatbot
+
+Deploy
+
+# Apply all manifests in the folder
+oc apply -f ./k8s/
+
+# or single file
+oc apply -f chatbot-deployment.yaml
+oc apply -f chatbot-service.yaml
+oc apply -f chatbot-route.yaml
+
+Validate
+
+oc get pods
+oc rollout status deployment/chatbot-deployment
+oc logs -f deploy/chatbot-deployment
+oc get svc
+oc get route chatbot -o jsonpath='{.spec.host}'
+curl https://$(oc get route chatbot -o jsonpath='{.spec.host}')/healthz
+
+Troubleshoot
+	•	ImagePullBackOff: check oc describe pod for image registry auth.
+	•	CrashLoopBackOff: inspect logs with oc logs.
+	•	No external URL: create a Route:
+
+oc expose svc chatbot-service
+
+
+
+⸻
+
+👉 Would you like me to rewrite your original prompt in this improved format so you can drop it directly into your zero-shot instruction framework, or do you want me to also include a reference solution pack (commands + validation checklist) like I did in the earlier examples?
+
+
+
+Love the goal. Here’s a tight package you can use right now:
+
+1) Quick audit — what to improve in your prompt
+	•	Be explicit about auth flow (OAuth2 client creds? password? headers?), and what to return/validate (HTTP 2xx, JSON schema keys, latency).
+	•	Specify certificate modes you want tested:
+a) default system trust, b) custom CA bundle (cacerts.pem), c) optional mutual TLS (client cert/key).
+	•	Define inputs as files (so it’s repeatable): config.yaml for endpoints and params, cacerts.pem (custom CA), optional client.crt/client.key.
+	•	Require both a Python test script and Postman steps.
+	•	Forbid verify=False. Require the script to fail loudly on TLS errors.
+
+⸻
+
+2) Drop-in zero-shot instruction prompt (final)
+
+Role:
+Act as a senior API test engineer. Produce a minimal, repeatable TLS-correct test harness for verifying APIs with verify=True using system trust, a custom CA bundle, and optional mTLS. Also produce step-by-step Postman instructions.
+
+Context & Assumptions:
+	•	I have a folder where I keep: API base URLs, OAuth2 token URL (client credentials), and a list of endpoints to test.
+	•	Some environments currently use verify=false; I must switch to verify=true and prove it works.
+	•	I might need a custom CA bundle (cacerts.pem). mTLS (client cert/key) may be required in some envs.
+
+Deliverables (exact):
+	1.	File tree and three files:
+	•	config.yaml (token config, base_url, endpoints with method/paths/params/bodies/expected_status/json_keys)
+	•	cacerts.pem (placeholder note; explain how to export/concatenate)
+	•	test_api.py (Python 3.10+; uses requests; retries; timeouts; prints pass/fail per endpoint)
+	•	(Optional if mTLS is used) client.crt + client.key
+	2.	Complete code for test_api.py and a sample config.yaml (copy-pasteable).
+	3.	How to run (commands) and what success looks like.
+	4.	Postman steps to: import CA, enable SSL verification, get token, set Bearer, attach client cert (if applicable), and test.
+	5.	Common TLS failure diagnostics (hostname mismatch, expired CA, wrong chain, proxy interception) with fixes.
+	6.	Security notes: never commit secrets/certs; .gitignore entries; least privilege.
+
+Constraints & style:
+	•	verify=True always; support --ca-bundle cacerts.pem and --mtls client.crt client.key flags.
+	•	Use requests + urllib3.Retry. Default timeout 10s. No external links.
+	•	Output: concise bullets + code blocks; no hidden reasoning.
+
+If any detail is missing, state a sensible assumption and proceed.
+
+⸻
+
+3) Reference solution you can run today
+
+A) File tree
+
+api-tls-test/
+├─ config.yaml
+├─ cacerts.pem                 # (optional) custom CA bundle
+├─ client.crt                  # (optional) for mTLS
+├─ client.key                  # (optional) for mTLS
+└─ test_api.py
+
+B) Example config.yaml
+
+auth:
+  token_url: "https://auth.example.com/oauth2/token"
+  client_id: "YOUR_CLIENT_ID"
+  client_secret: "YOUR_CLIENT_SECRET"
+  scope: "api.read api.write"      # optional; omit if not needed
+  audience: ""                     # optional; for some IdPs
+api:
+  base_url: "https://api.example.com"
+  default_headers:
+    Accept: "application/json"
+endpoints:
+  - name: "Get Account"
+    method: "GET"
+    path: "/v1/accounts/123"
+    params: {}
+    json: null
+    expected_status: 200
+    expect_json_keys: ["id", "name"]
+  - name: "Create Order"
+    method: "POST"
+    path: "/v1/orders"
+    params: {}
+    json:
+      symbol: "AAPL"
+      qty: 1
+      side: "BUY"
+    expected_status: 201
+    expect_json_keys: ["orderId", "status"]
+  - name: "List Orders"
+    method: "GET"
+    path: "/v1/orders"
+    params:
+      limit: 5
+    json: null
+    expected_status: 200
+    expect_json_keys: ["items"]
+
+C) Python tester test_api.py
+
+import argparse, sys, time, json
+import yaml
+import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
+
+def load_yaml(p):
+    with open(p, "r", encoding="utf-8") as f:
+        return yaml.safe_load(f)
+
+def session_with_retries(total=3, backoff=0.3):
+    s = requests.Session()
+    retry = Retry(
+        total=total,
+        connect=total,
+        read=total,
+        status=total,
+        backoff_factor=backoff,
+        status_forcelist=(429, 500, 502, 503, 504),
+        allowed_methods=frozenset(["GET","POST","PUT","PATCH","DELETE"])
+    )
+    adapter = HTTPAdapter(max_retries=retry)
+    s.mount("https://", adapter)
+    s.mount("http://", adapter)
+    return s
+
+def get_token(cfg, verify, ca_bundle, timeout):
+    auth = cfg.get("auth", {})
+    token_url = auth.get("token_url")
+    if not token_url:
+        return None  # assume no token needed
+    data = {"grant_type": "client_credentials"}
+    if auth.get("scope"): data["scope"] = auth["scope"]
+    if auth.get("audience"): data["audience"] = auth["audience"]
+    resp = requests.post(
+        token_url,
+        data=data,
+        auth=(auth.get("client_id",""), auth.get("client_secret","")),
+        timeout=timeout,
+        verify=ca_bundle if ca_bundle else verify
+    )
+    resp.raise_for_status()
+    tok = resp.json().get("access_token")
+    if not tok:
+        raise RuntimeError("Token fetch succeeded but access_token missing in response")
+    return tok
+
+def check_json_keys(obj, keys):
+    if not isinstance(obj, dict): return False, "Response is not a JSON object"
+    missing = [k for k in keys or [] if k not in obj]
+    return (len(missing) == 0, f"Missing keys: {missing}" if missing else "ok")
+
+def main():
+    parser = argparse.ArgumentParser(description="TLS-verified API tester")
+    parser.add_argument("--config", default="config.yaml")
+    parser.add_argument("--timeout", type=float, default=10.0)
+    parser.add_argument("--ca-bundle", default=None, help="Path to custom CA bundle (PEM).")
+    parser.add_argument("--mtls-cert", default=None, help="Path to client cert (PEM).")
+    parser.add_argument("--mtls-key", default=None, help="Path to client key (PEM).")
+    args = parser.parse_args()
+
+    cfg = load_yaml(args.config)
+    base = cfg["api"]["base_url"].rstrip("/")
+    default_headers = cfg["api"].get("default_headers", {}) or {}
+
+    # Strict TLS: verify must be True unless a bundle is provided (still verify!)
+    verify = True
+    ca_bundle = args.ca_bundle
+
+    # Optional mTLS
+    cert_tuple = None
+    if args.mtls_cert and args.mtls_key:
+        cert_tuple = (args.mtls_cert, args.mtls_key)
+
+    token = get_token(cfg, verify, ca_bundle, args.timeout)
+    s = session_with_retries()
+
+    results = []
+    for ep in cfg.get("endpoints", []):
+        name = ep["name"]
+        method = ep["method"].upper()
+        url = f"{base}{ep['path']}"
+        params = ep.get("params") or {}
+        json_body = ep.get("json", None)
+        expected = ep.get("expected_status", 200)
+        need_keys = ep.get("expect_json_keys", [])
+
+        headers = dict(default_headers)
+        if token:
+            headers["Authorization"] = f"Bearer {token}"
+
+        t0 = time.time()
+        try:
+            resp = s.request(
+                method, url,
+                params=params,
+                json=json_body,
+                headers=headers,
+                timeout=args.timeout,
+                verify=ca_bundle if ca_bundle else verify,
+                cert=cert_tuple
+            )
+            latency_ms = round((time.time() - t0) * 1000, 1)
+            ok_status = (resp.status_code == expected)
+            detail = f"status={resp.status_code}, latency_ms={latency_ms}"
+
+            ok_json = True
+            if need_keys:
+                try:
+                    obj = resp.json()
+                    ok_json, msg = check_json_keys(obj, need_keys)
+                    if not ok_json:
+                        detail += f", json_check={msg}"
+                except Exception as e:
+                    ok_json = False
+                    detail += f", json_parse_error={e}"
+
+            ok = ok_status and ok_json
+            results.append((name, ok, detail))
+            print(f"[{'PASS' if ok else 'FAIL'}] {name} -> {detail}")
+        except requests.exceptions.SSLError as e:
+            print(f"[FAIL] {name} -> TLS/SSL error: {e}")
+            results.append((name, False, f"TLS error: {e}"))
+        except Exception as e:
+            print(f"[FAIL] {name} -> {e}")
+            results.append((name, False, str(e)))
+
+    # Exit non-zero on any failure
+    if any(not ok for _, ok, _ in results):
+        sys.exit(2)
+
+if __name__ == "__main__":
+    main()
+
+D) How to run
+
+# 1) (Optional) place your corporate/custom root CAs into cacerts.pem
+#    You can concatenate multiple PEM certs into one file.
+
+# 2) Install deps
+python -m venv .venv && . .venv/bin/activate
+pip install requests pyyaml
+
+# 3) Run with system trust only
+python test_api.py --config config.yaml
+
+# 4) Run with custom CA bundle
+python test_api.py --config config.yaml --ca-bundle ./cacerts.pem
+
+# 5) Run with mutual TLS (if required by server)
+python test_api.py --config config.yaml --ca-bundle ./cacerts.pem --mtls-cert ./client.crt --mtls-key ./client.key
+
+# Exit code 0 = all PASS; non-zero = at least one failure.
+
+E) Postman — step-by-step (TLS with verify=true)
+	1.	Enable SSL verification: Settings → General → “SSL certificate verification” ON.
+	2.	Custom CA trust: Settings → Certificates → CA Certificates → “Add CA Certificate” → upload cacerts.pem (or import into OS trust so Postman picks it up).
+	3.	OAuth2 token:
+	•	In your Collection or Request → Authorization tab → Type OAuth 2.0.
+	•	Grant type: Client Credentials.
+	•	Token URL = your auth.token_url.
+	•	Client ID/Secret as in config.yaml.
+	•	Scope (if required).
+	•	Click Get New Access Token → Use Token.
+	•	This adds Bearer token to the request automatically.
+	4.	mTLS (if required): Settings → Certificates → Client Certificates → Add → Host api.example.com → upload client.crt and client.key.
+	5.	Requests: Create requests for each endpoint (GET /v1/accounts/123, POST /v1/orders, etc.).
+	•	Params/body per your config.yaml.
+	•	Expect 2xx and the expected JSON keys.
+	6.	Validate TLS: Check the Console for TLS errors (cert chain/hostname). Any error here means verification failed (good! it’s enforcing verify=true).
+
+F) Common TLS failures & quick fixes
+	•	Hostname mismatch: API URL must match cert CN/SAN (use the correct FQDN).
+	•	Unknown CA / corporate proxy: Add the proxy’s root CA to cacerts.pem (server + intercepting proxy chain).
+	•	Expired/incorrect chain: Ensure intermediate certs are included on the server; update CA bundle.
+	•	mTLS required but missing: Provide client.crt/client.key in Postman and --mtls-* in script.
+	•	Proxy env: If using HTTP(S)_PROXY, also trust the proxy CA or bypass for the API host.
+
+G) Security hygiene
+	•	Add to .gitignore: cacerts.pem, client.crt, client.key, anything with secrets.
+	•	Use env vars or a secrets manager for client_id/secret in CI.
+	•	Rotate tokens and certs; avoid storing production creds locally.
+
+⸻
+
+Want me to tailor the config.yaml to your actual endpoints and token server next?
