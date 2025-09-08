@@ -367,3 +367,104 @@ G) Security hygiene
 ⸻
 
 Want me to tailor the config.yaml to your actual endpoints and token server next?
+
+
+
+
+Got it 👍 — I see what you’re trying to achieve: you want to write a zero-shot instruction prompt that ensures the agent doesn’t just spit out code, but analyzes your script, explains how env vars get populated, and helps you generalize it (so you can replace hardcoded URLs with os.getenv(...)).
+
+Here’s how I’ll break it down:
+
+⸻
+
+1. Issues with your current prompt
+	•	Ambiguous intent: you ask “understand how the values are getting populated” but don’t specify what you want back (code explanation? flow diagram? examples?).
+	•	Limited scope: you only mention FILEURL and accounturl, but you really want a reusable pattern for replacing hardcoded values.
+	•	No deliverables: agent doesn’t know whether to provide just Python snippets, or also docs, or a checklist for deployment.
+	•	Missing validation step: doesn’t ask to test that os.getenv actually works when set/unset.
+
+⸻
+
+2. Improved Zero-Shot Prompt (drop-in)
+
+Role:
+Act as a senior Python engineer reviewing my script.
+
+Context:
+I have a Python script that deploys an LLM chatbot. Inside it I see lines like:
+
+self.fileurl = os.getenv("FILEURL", "")
+
+Currently some URLs are hardcoded. I want to refactor them to use environment variables.
+
+Objectives (what to produce):
+	1.	Explain how environment variables get populated into os.getenv(...).
+	•	Where they come from (shell, .env, Kubernetes/OpenShift ConfigMap/Secret).
+	•	What happens if they’re missing (default values).
+	2.	Identify all places in the script where hardcoded values should be replaced.
+	3.	Propose replacements in the same pattern (os.getenv("NAME", "default")).
+	•	At least 2–3 concrete examples (e.g., ACCOUNTURL, MODELAPIURL).
+	4.	Show code snippets with the refactor applied.
+	5.	Provide steps to test:
+	•	Run with env var set → value picked up.
+	•	Run with env var unset → default applied.
+	•	How to pass env vars in local shell and in Kubernetes/OpenShift manifests.
+	6.	Best practices checklist:
+	•	Always provide sensible defaults.
+	•	Document required vs optional vars.
+	•	Use .env file locally, ConfigMap/Secret in K8s.
+
+Constraints & style:
+	•	Output in clear sections: Explanation, Refactor Examples, Code Snippets, Testing Steps, Best Practices.
+	•	Keep explanations concise (bullets + short code blocks).
+	•	Do not assume specific frameworks beyond Python os.getenv.
+
+If anything is missing from the script, state your assumption and proceed.
+
+⸻
+
+3. Example of what the agent should output
+
+Explanation
+	•	os.getenv("FILEURL", "") → fetches FILEURL from the environment; if unset, defaults to "".
+	•	In Kubernetes/OpenShift, env vars are set via env: in the Pod spec, often backed by ConfigMaps or Secrets.
+
+Refactor Examples
+
+Hardcoded:
+
+self.accounturl = "https://api.example.com/account"
+self.modelurl = "http://localhost:8000/model"
+
+Refactored:
+
+self.accounturl = os.getenv("ACCOUNTURL", "https://api.example.com/account")
+self.modelurl = os.getenv("MODELURL", "http://localhost:8000/model")
+
+Testing Steps
+
+# Set and run
+export ACCOUNTURL="https://test.example.com/account"
+python myscript.py
+
+# Unset → falls back to default
+unset ACCOUNTURL
+python myscript.py
+
+In Kubernetes:
+
+env:
+  - name: ACCOUNTURL
+    value: "https://cluster.example.com/account"
+
+Best Practices
+	•	Use .env locally (python-dotenv can help).
+	•	Document required env vars in README.
+	•	For sensitive values (tokens, passwords), always use Secrets, not ConfigMaps.
+	•	Avoid empty string defaults unless that’s safe.
+
+⸻
+
+✅ This improved prompt ensures the agent does three things you need: explain, refactor, and show how to test & validate.
+
+Would you like me to also write a generalized “pattern prompt” you can reuse for any script analysis task (not just env vars), so you don’t have to rewrite from scratch each time?
