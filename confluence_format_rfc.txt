@@ -1,0 +1,223 @@
+
+---
+
+# 📄 RFC: <Title of the Change>
+
+---
+
+## 🧾 Metadata
+
+|| Field || Value ||
+| Status | Draft |
+| Due Date |  |
+| Product |  |
+| Owner |  |
+| Stakeholders |  |
+| Interested Parties |  |
+
+---
+
+## ✅ Process Checklist
+
+* [ ] Review RFC with Tech Lead and Product Owner
+* [ ] Send publication email and mark status as *Under Review*
+* [ ] Notify team via Teams/Slack channel
+* [ ] Finalize conclusion and link to Epic (if applicable)
+* [ ] Update status to *Closed* or *Discarded* (DO NOT delete RFC)
+
+---
+
+## 📌 Summary
+
+{panel:title=Overview|borderStyle=solid|borderColor=#ccc|bgColor=#f4f5f7}
+Provide a brief overview of the proposed change (2–4 lines).
+
+* What is changing?
+* Why is it important?
+* What is the expected outcome?
+  {panel}
+
+---
+
+## 📖 Definitions
+
+|| Term || Description ||
+| RFC | Request for Comments |
+| SRE | Site Reliability Engineering |
+| SLO | Service Level Objective |
+| SLI | Service Level Indicator |
+| Epic | Large body of work tracked in Jira |
+| Add more |  |
+
+---
+
+## 🏗️ Background
+
+{panel:title=Current State|borderStyle=solid|borderColor=#ccc}
+Describe how the system currently works.
+{panel}
+
+{panel:title=Problem Statement|borderStyle=solid|borderColor=#ff5630|bgColor=#fff4f2}
+Clearly explain the issue or gap.
+{panel}
+
+{panel:title=Why Change is Needed|borderStyle=solid|borderColor=#36b37e|bgColor=#f3fff6}
+Explain business/technical justification.
+{panel}
+
+---
+
+## 🚀 Proposal
+
+{panel:title=Proposed Solution|borderStyle=solid|borderColor=#0052cc|bgColor=#f0f5ff}
+Describe:
+
+* What will be changed
+* How it will be implemented
+* High-level design/approach
+  {panel}
+
+### 🔧 Implementation Steps
+
+# Step 1:
+
+# Step 2:
+
+# Step 3:
+
+### 🧩 Systems Affected
+
+* Confluence
+* Jira
+* CI/CD Pipelines
+* <Add more systems>
+
+---
+
+## 🔄 Alternative Approaches
+
+### Option 1: <Name>
+
+## **Pros**
+
+*
+
+## **Cons**
+
+*
+
+**Decision:** Why this was not chosen
+
+---
+
+### Option 2: <Name>
+
+## **Pros**
+
+*
+
+## **Cons**
+
+*
+
+**Decision:** Why this was not chosen
+
+---
+
+## ⚠️ Impact Analysis
+
+### 🛠️ Technical Impact
+
+*
+*
+
+### 💼 Business Impact
+
+*
+*
+
+### 🔗 Dependencies
+
+*
+*
+
+### ⚡ Risks & Mitigation
+
+|| Risk || Mitigation ||
+|  |  |
+|  |  |
+
+---
+
+## 🔙 Rollback Plan
+
+{panel:title=Rollback Strategy|borderStyle=solid|borderColor=#de350b|bgColor=#fff0f0}
+Describe how to safely revert the change:
+
+1.
+2.
+3.
+
+{panel}
+
+---
+
+## 📊 Monitoring & Validation
+
+### ✅ Success Criteria
+
+*
+*
+
+### 📈 Metrics (SLIs/SLOs)
+
+|| Metric || Target ||
+| Availability | 99.9% |
+| Latency | p95 < X ms |
+| Error Rate | < X% |
+
+### 🔍 Validation Plan
+
+* Pre-deployment validation:
+* Post-deployment checks:
+* Observability dashboards:
+
+---
+
+## ❓ Open Questions
+
+*
+*
+*
+
+---
+
+## 📎 References
+
+* Jira Epic:
+* Design Docs:
+* Related RFCs:
+
+---
+
+## 🏁 Final Decision (To be filled after review)
+
+{panel:title=Decision Summary|borderStyle=dashed|borderColor=#6554c0|bgColor=#f7f5ff}
+
+* Approved / Rejected
+* Key notes:
+* Next steps:
+  {panel}
+
+---
+
+## 💡 Pro Tip (for your org)
+
+Since you're working in an **SRE + enterprise environment**, you can elevate this by:
+
+* Adding **mandatory RFC ID tracking (RFC-001, RFC-002)**
+* Linking to **incident prevention metrics**
+* Enforcing RFC via **CI/CD gates (no deploy without RFC)**
+
+---
+
