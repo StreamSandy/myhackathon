@@ -254,8 +254,3 @@ If implemented properly, this RFC framework becomes:
 
 ---
 
-If you want next level, I can help you:
-
-* Convert this into **Confluence-ready template (copy-paste format)**
-* Add **automation (AI-based RFC reviewer)**
-* Align it with **SRE maturity model + OKRs (perfect for your role)**
