@@ -1,3 +1,52 @@
+may 06
+
+Hi Team,
+
+I wanted to propose the introduction of a standardized RFC (Request for Comments) framework across our engineering initiatives to improve architectural governance, decision traceability, operational readiness, and cross-functional alignment.
+
+Currently, documentation and design decisions are often captured in varying formats across teams, which can create inconsistencies in reviews, onboarding, auditability, and long-term maintainability. As our platforms and operational responsibilities continue to scale, having a consistent RFC-driven engineering process would help improve both technical execution and stakeholder visibility.
+
+The proposed framework includes:
+- A standardized Confluence RFC template
+- Defined lifecycle states (Draft → Under Review → Approved → Closed/Discarded)
+- Mandatory sections for:
+  - Impact analysis
+  - Rollback planning
+  - Monitoring & validation
+  - Risk assessment
+- Alignment with SRE and production readiness practices
+
+This would help establish:
+- Better engineering governance
+- Faster and more structured reviews
+- Improved operational preparedness
+- Stronger knowledge retention and audit traceability
+- Consistent communication across engineering and product stakeholders
+
+I have created a draft Confluence RFC template and structure for review:
+<Insert Confluence Link Here>
+
+I would appreciate feedback from leadership and engineering stakeholders on:
+- Adoption scope
+- Governance ownership
+- Review workflow
+- Potential integration with Jira / change management processes
+
+If aligned, this can gradually evolve into a lightweight but scalable engineering decision framework across teams.
+
+Thanks,
+Ajith Kumar
+Senior Software Engineer
+
+
+
+
+
+
+
+
+
+
 Great — your current prompt is functional, but it leaves a lot of room for ambiguity. To make it effective as a zero-shot instruction prompt (so the most capable agent gives you exactly what you need), here’s a breakdown:
 
 ⸻
