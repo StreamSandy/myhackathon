@@ -1,3 +1,642 @@
+Yes — because the backend and frontend are in **two different repos**, the best approach is to use **two-stage prompts**:
+
+1. **Backend Discovery Prompt**
+   Ask the agent to extract the Calendar Agent API contract, endpoints, request/response payloads, auth details, and expected UI behavior from the backend repo.
+
+2. **Frontend Integration Prompt**
+   Feed that backend contract into the frontend repo prompt and ask the agent to integrate it into the existing React chat UI using the current frontend architecture.
+
+This is better than directly asking the frontend agent to “guess” the backend behavior.
+
+---
+
+# Prompt 1: Backend Discovery Prompt
+
+Use this first in the **backend repo**.
+
+```text
+You are a senior backend engineer and API integration analyst.
+
+Context:
+We already have a working backend implementation for a bank advisor AI chatbot. A Calendar Agent has been added by Copilot. The backend repo contains calendar-related agent, service, tools, routes/endpoints, models, and possibly mock data.
+
+The frontend React chat UI is in a separate repository. Before integrating the frontend, I need you to analyze this backend repo and produce a clear frontend integration contract.
+
+Your task:
+Go through the backend repository and identify everything the frontend team needs to integrate the Calendar Agent into the existing React chat UI.
+
+Analyze:
+
+1. Calendar Agent backend architecture
+   - Agent files
+   - Service files
+   - Tool files
+   - Route/controller files
+   - Model/schema files
+   - Mock data files
+   - Config files
+
+2. API endpoints
+   - Endpoint URL
+   - HTTP method
+   - Request body
+   - Query parameters
+   - Headers
+   - Auth/session requirements
+   - Response payload
+   - Error response format
+
+3. Chat integration behavior
+   - Is there a generic chat endpoint?
+   - Is there a dedicated Calendar Agent endpoint?
+   - How should frontend route a Calendar Agent message?
+   - Does the frontend need to pass agent name/type?
+   - Does the backend expect customer_id, advisor_id, session_id, conversation_id, or user context?
+
+4. Calendar Agent capabilities
+   - Bill reminders
+   - Investment review reminders
+   - Retirement alerts
+   - Lifecycle triggers
+   - Advisor follow-up reminder creation
+   - Suggested actions
+
+5. Response format
+   - Plain text response
+   - Structured JSON response
+   - Reminder list
+   - Alert cards
+   - Suggested actions
+   - Metadata
+
+6. Frontend display requirements
+   - What should be shown as normal chat text?
+   - What should be shown as reminder cards?
+   - What should be shown as lifecycle alert cards?
+   - What actions/buttons should be supported?
+
+7. Local run information
+   - Backend port
+   - Base URL
+   - CORS configuration
+   - Required environment variables
+   - How to start backend locally
+
+8. Testing information
+   - Example curl commands
+   - Example successful requests
+   - Example failed requests
+   - Test customer IDs or advisor IDs available in mock data
+
+Output required:
+
+Create a frontend integration handoff document with the following sections:
+
+1. Executive Summary
+2. Backend Calendar Agent Architecture
+3. API Contract
+4. Request/Response Examples
+5. Frontend Integration Requirements
+6. UI Rendering Recommendations
+7. State Management Expectations
+8. Error Handling
+9. Local Development Setup
+10. Sample curl Commands
+11. Assumptions
+12. Known Gaps
+13. Recommended Frontend Implementation Plan
+
+Important:
+Do not modify backend code unless required to understand or fix obvious blocking issues.
+Focus on extracting the contract needed by the frontend repo.
+
+Apply Pareto Principle:
+Focus on the 20% of backend details that the frontend needs for 80% successful integration.
+Avoid over-documenting internal backend implementation unless it impacts frontend integration.
+```
+
+---
+
+# Prompt 2: Frontend Integration Prompt
+
+Use this in the **React frontend repo** after you get the backend handoff document.
+
+```text
+You are a senior React frontend engineer and full-stack integration specialist.
+
+Context:
+We have two separate repositories:
+
+1. Backend repo
+   - Contains a working Calendar Agent implementation for a bank advisor AI chatbot.
+   - Backend exposes calendar-related APIs and/or agent chat APIs.
+
+2. Frontend repo
+   - Contains the existing React chat UI.
+   - This is the repo you are working in now.
+
+Your task:
+Integrate the backend Calendar Agent into the existing React chat UI.
+
+Important:
+Before writing code, analyze the existing frontend repository carefully and reuse its current architecture, libraries, coding style, state management, API client patterns, routing, components, styling, and error-handling approach.
+
+Do not introduce unnecessary new frameworks or libraries.
+
+Use the backend API contract below as the source of truth.
+
+Paste backend API contract here:
+
+[PASTE BACKEND DISCOVERY OUTPUT HERE]
+
+---
+
+Primary Objective:
+Add Calendar Agent support into the existing React chat UI so bank advisors can ask calendar-related questions and receive structured responses such as reminders, lifecycle alerts, and suggested actions.
+
+Calendar Agent use cases:
+1. Show upcoming bill reminders
+2. Show investment review reminders
+3. Show retirement planning alerts
+4. Show customer lifecycle triggers
+5. Create advisor follow-up reminders
+6. Show suggested next actions
+
+---
+
+Frontend Repository Analysis Required:
+
+First inspect the frontend repo and identify:
+
+1. React framework
+   - React, Next.js, Vite, CRA, Remix, etc.
+
+2. Current chat UI structure
+   - Chat page/component
+   - Message list component
+   - Message input component
+   - API calling logic
+   - Chat state management
+
+3. Existing API layer
+   - axios/fetch wrapper
+   - service files
+   - hooks
+   - environment variable handling
+   - error handling
+
+4. Existing state management
+   - React state
+   - Context API
+   - Redux
+   - Zustand
+   - React Query
+   - SWR
+   - other
+
+5. Existing styling
+   - CSS modules
+   - Tailwind
+   - styled-components
+   - MUI
+   - Chakra
+   - Bootstrap
+   - custom CSS
+
+6. Existing authentication/session handling
+   - advisor ID
+   - customer ID
+   - session ID
+   - conversation ID
+   - auth token
+
+7. Existing message schema
+   - user message format
+   - assistant response format
+   - metadata support
+   - support for structured cards
+
+---
+
+Implementation Requirements:
+
+Implement Calendar Agent integration with minimal, high-impact changes.
+
+Required frontend changes may include:
+
+1. API client integration
+   - Add Calendar Agent API function
+   - Use existing API client pattern
+   - Use backend base URL from environment config
+   - Handle loading, success, and error states
+
+2. Chat UI integration
+   - Allow advisor to send message to Calendar Agent
+   - Add Calendar Agent as a selectable mode, tab, dropdown, chip, command, or auto-routed intent based on existing UI design
+   - Display Calendar Agent response inside existing chat thread
+
+3. Structured response rendering
+   - Render summary as normal assistant message
+   - Render reminders as cards
+   - Render lifecycle alerts as cards
+   - Render suggested actions as chips/buttons/list items
+   - Gracefully fallback to plain text if structured data is missing
+
+4. Create reminder flow
+   - If backend supports reminder creation, add minimal UI support
+   - Example: advisor types “Create follow-up reminder for next Monday”
+   - UI sends request to backend and displays confirmation
+
+5. Error handling
+   - API failure
+   - Missing customer ID
+   - Backend unavailable
+   - Invalid response format
+   - Empty reminders
+
+6. Configuration
+   - Add or reuse environment variable for backend base URL
+   - Document required local setup
+
+7. Tests
+   - Add lightweight unit/component tests where practical
+   - Test API client function
+   - Test Calendar Agent response rendering
+   - Test error/empty state
+
+8. Documentation
+   - Add README or implementation notes
+   - Include local run instructions
+   - Include demo script
+
+---
+
+Preferred UI Behavior:
+
+Demo flow:
+
+1. Advisor opens existing chatbot UI.
+2. Advisor selects or invokes Calendar Agent.
+3. Advisor selects customer ID or uses existing selected customer context.
+4. Advisor asks:
+   “Show upcoming calendar alerts for this customer.”
+5. UI sends the query to backend Calendar Agent.
+6. UI displays:
+   - Summary response
+   - Reminder cards
+   - Lifecycle alert cards
+   - Suggested next actions
+7. Advisor asks:
+   “Create a follow-up reminder for next Monday.”
+8. UI displays confirmation returned by backend.
+
+---
+
+Example UI Rendering:
+
+Calendar Agent response should be rendered like this:
+
+Summary:
+“This customer has 3 upcoming calendar events in the next 30 days.”
+
+Reminder Cards:
+- Investment Review
+  Due: 2026-05-20
+  Priority: High
+  Description: Quarterly portfolio review is due.
+
+Lifecycle Alert Cards:
+- Retirement Planning
+  Trigger: Customer is approaching retirement milestone.
+  Recommendation: Schedule retirement planning review.
+
+Suggested Actions:
+- Schedule portfolio review call
+- Send retirement planning checklist
+- Review pending bill payments
+
+---
+
+Pareto Principle:
+
+Focus on the 20% frontend implementation that delivers 80% business value.
+
+Prioritize:
+1. Working end-to-end integration
+2. Reuse of existing chat UI
+3. Clean API client wrapper
+4. Structured response rendering
+5. Simple Calendar Agent selection/invocation
+6. Good demo flow
+7. Minimal tests and documentation
+
+Avoid:
+1. Full UI redesign
+2. Complex multi-agent orchestration
+3. Introducing unnecessary libraries
+4. Over-complicated calendar UI
+5. Building a full scheduling product
+6. Large refactoring of existing chat architecture
+
+---
+
+Expected Output:
+
+After implementation, provide:
+
+1. Frontend repo architecture summary
+2. Calendar Agent integration approach
+3. Files changed
+4. Files added
+5. API client changes
+6. Chat UI changes
+7. Component changes
+8. Environment variables required
+9. How to run locally
+10. How to test
+11. Demo script
+12. Known assumptions
+13. Known limitations
+14. Future improvements
+
+Important:
+Do not only provide theoretical design.
+Implement working frontend code in this repo.
+If any backend details are missing, make reasonable assumptions, document them clearly, and continue with the best possible implementation.
+```
+
+---
+
+# Prompt 3: Combined Prompt for Two Repos
+
+Use this only if your coding agent has access to **both backend and frontend repos**.
+
+```text
+You are a senior full-stack engineer working across two repositories.
+
+There are two separate repos:
+
+1. Backend repo
+   - Contains Python backend for bank advisor AI chatbot
+   - Copilot has already created Calendar Agent backend APIs, services, tools, and related logic
+
+2. Frontend repo
+   - Contains existing React chat UI
+   - Needs to integrate with the Calendar Agent backend
+
+Your task:
+Analyze both repos and implement frontend integration for the Calendar Agent into the existing React chat UI.
+
+Step 1: Backend Contract Discovery
+
+In the backend repo, analyze:
+- Calendar Agent routes/endpoints
+- Request/response models
+- Required headers/auth/session fields
+- advisor_id/customer_id/session_id requirements
+- Backend base path and port
+- Error response format
+- Example payloads
+- Supported Calendar Agent actions
+
+Produce a concise backend-to-frontend API contract.
+
+Step 2: Frontend Repo Analysis
+
+In the frontend repo, analyze:
+- React framework
+- Existing chat UI components
+- Existing API client pattern
+- Existing state management
+- Existing styling approach
+- Existing auth/session/customer context
+- Existing message schema
+
+Step 3: Frontend Implementation
+
+Implement Calendar Agent integration using the frontend repo’s existing patterns.
+
+Required:
+- Add API client function for Calendar Agent
+- Integrate Calendar Agent into existing chat UI
+- Support sending messages to Calendar Agent
+- Render structured Calendar Agent response
+- Show reminder cards, lifecycle alert cards, and suggested actions
+- Handle loading, empty, and error states
+- Add minimal tests where practical
+- Add local setup and demo documentation
+
+Step 4: Demo Flow
+
+Support this demo:
+
+Advisor asks:
+“Show upcoming calendar alerts for this customer.”
+
+UI displays:
+- Summary
+- Bill reminders
+- Investment review reminders
+- Retirement planning alerts
+- Lifecycle triggers
+- Suggested actions
+
+Advisor asks:
+“Create a follow-up reminder for next Monday.”
+
+UI displays:
+- Confirmation message
+- Created reminder details
+
+Pareto Principle:
+Focus on the 20% of changes that deliver 80% of impact.
+Reuse existing architecture and libraries.
+Avoid unnecessary refactoring, new frameworks, full UI redesign, or over-engineering.
+
+Output:
+1. Backend API contract summary
+2. Frontend architecture summary
+3. Implementation plan
+4. Files changed
+5. Code changes
+6. Test instructions
+7. Local run instructions
+8. Demo script
+9. Assumptions
+10. Limitations
+11. Future enhancements
+
+Think like a senior engineer creating a reference implementation that other agent integrations can follow.
+```
+
+---
+
+# Best Practical Strategy
+
+Use this sequence:
+
+```text
+Backend repo → Run Prompt 1
+Frontend repo → Run Prompt 2 using backend output
+Both repos available → Run Prompt 3
+```
+
+This gives the frontend agent enough context without asking it to guess backend behavior.
+
+---
+
+# Extra Section You Can Add: “Calendar Agent Layout Contract”
+
+Ask the backend agent to produce this small contract and paste it into the frontend prompt.
+
+```text
+Calendar Agent Layout Contract
+
+The frontend should render Calendar Agent responses using this structure:
+
+1. Assistant Summary
+   - Render as standard assistant chat message.
+
+2. Reminder Cards
+   Fields:
+   - reminder_id
+   - type
+   - title
+   - due_date
+   - priority
+   - customer_id
+   - customer_name
+   - description
+   - status
+
+3. Lifecycle Alert Cards
+   Fields:
+   - alert_id
+   - type
+   - trigger
+   - recommendation
+   - priority
+   - effective_date
+
+4. Suggested Action Chips
+   Fields:
+   - action_id
+   - label
+   - action_type
+   - payload
+
+5. Confirmation Message
+   Used when advisor creates a reminder.
+
+Fallback:
+If structured fields are missing, render the backend message as plain chat text.
+```
+
+---
+
+# Final Recommended Prompt for Your Case
+
+Since your backend is already created and frontend is separate, I recommend using this exact prompt in the **frontend repo**:
+
+```text
+You are a senior React engineer integrating a backend Calendar Agent into an existing bank advisor chatbot UI.
+
+The backend is in a separate repo and already has Calendar Agent APIs, services, tools, and agent logic created.
+
+Your task is to work only in this frontend React repo and integrate the existing backend Calendar Agent into the existing chat UI.
+
+Before coding, analyze this frontend repo carefully:
+- Existing React framework
+- Existing chat components
+- Existing API client/service layer
+- Existing state management
+- Existing styling system
+- Existing auth/session/customer context
+- Existing message schema
+- Existing environment variable pattern
+
+Use the backend API contract below as the source of truth:
+
+[PASTE BACKEND API CONTRACT HERE]
+
+Implementation goal:
+Make the Calendar Agent usable from the existing chat UI.
+
+The advisor should be able to:
+1. Select or invoke Calendar Agent
+2. Ask for upcoming calendar alerts
+3. View bill reminders
+4. View investment review reminders
+5. View retirement planning alerts
+6. View lifecycle triggers
+7. Create advisor follow-up reminders if supported by backend
+
+Frontend should display:
+1. Summary as normal assistant message
+2. Reminders as cards
+3. Lifecycle alerts as cards
+4. Suggested actions as chips or simple list
+5. Confirmation messages for created reminders
+6. Loading state
+7. Empty state
+8. Error state
+
+Follow existing frontend architecture.
+Reuse existing components, hooks, API clients, styles, and patterns.
+Do not introduce new frameworks unless absolutely necessary.
+
+Apply Pareto Principle:
+Focus on the 20% implementation that delivers 80% impact:
+- Working end-to-end chat integration
+- Clean API client
+- Simple Calendar Agent selector or routing
+- Structured response rendering
+- Minimal tests
+- Demo-ready flow
+
+Avoid:
+- Full chat UI redesign
+- Complex calendar views
+- Over-engineered state management
+- Large refactoring
+- New libraries unless required
+
+Expected output:
+1. Frontend repo architecture summary
+2. Integration approach
+3. Assumptions
+4. Files changed
+5. Working code changes
+6. Environment variable changes
+7. Test instructions
+8. Local run instructions
+9. Demo script
+10. Known limitations
+11. Future improvements
+
+If backend details are missing, make reasonable assumptions, document them, and continue.
+The final result should be working code and a clean reference pattern for future agent integrations.
+```
+
+---
+
+## My Suggestion
+
+Do not ask the frontend agent to “understand backend repo” unless it has access to both repos. Instead, first generate a **Backend API Contract** from the backend repo, then paste that into the frontend prompt.
+
+That will produce much better working code.
+
+
+
+
+
+
+
+
+
+
+=====================================================================================================================================
+
 Below is a **stronger zero-shot instruction prompt** you can use for your coding agent.
 
 ---
