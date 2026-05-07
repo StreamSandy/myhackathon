@@ -1,0 +1,487 @@
+Below is a **stronger zero-shot instruction prompt** you can use for your coding agent.
+
+---
+
+## Improved Zero-Shot Prompt
+
+````text
+You are a senior full-stack engineer and solution architect.
+
+We already have a working AI chatbot application for bank advisors. The chatbot currently supports advisor-facing conversations, and we are planning to add multiple specialized agents into the existing chat experience.
+
+Planned agents include:
+
+1. Market Summary Agent
+   - Market data trends
+   - Portfolio analysis
+   - Market movement summary
+
+2. Account 360 Agent
+   - Customer risk analysis
+   - Personalized recommendation
+   - Account-level insight generation
+
+3. Calendar Agent
+   - Bill reminders
+   - Investment review reminders
+   - Retirement planning alerts
+   - Customer lifecycle triggers
+   - Follow-up reminders for advisors
+
+My assigned scope is to design and implement the Calendar Agent and integrate it into the existing chatbot UI.
+
+Your task is to analyze the existing repository and deliver a working implementation using the current architecture as much as possible.
+
+---
+
+## Primary Objective
+
+Build a Calendar Agent that can be accessed from the existing chat UI and can help bank advisors with calendar-based reminders and lifecycle events.
+
+The implementation should include:
+
+1. Python backend changes
+2. React frontend / chat UI integration
+3. Agent orchestration logic
+4. Calendar reminder data model or mock data model
+5. API endpoints required for the UI
+6. Example test cases
+7. Clear README or implementation notes
+
+The solution should work end-to-end in the existing project structure.
+
+---
+
+## Important Repository Analysis Instructions
+
+Before writing new code, first analyze the existing codebase carefully.
+
+Identify and explain:
+
+1. Existing backend framework  
+   - FastAPI, Flask, Django, or other framework
+
+2. Existing frontend framework  
+   - React, Next.js, Vite, CRA, or other framework
+
+3. Existing chatbot architecture  
+   - How messages are sent
+   - How responses are generated
+   - Whether agents/tools already exist
+   - How state/session/user context is handled
+
+4. Existing folder structure  
+   - Backend folders
+   - Frontend folders
+   - Shared config
+   - Existing API routes
+   - Existing service/helper layers
+
+5. Existing libraries and patterns  
+   - LLM library, LangChain, LangGraph, OpenAI SDK, internal SDK, axios/fetch, Zustand/Redux, etc.
+
+6. Authentication and user context  
+   - How advisor ID, customer ID, session ID, or user role is passed
+
+Reuse the existing architecture, naming conventions, services, and libraries wherever possible.
+
+Do not introduce unnecessary new frameworks unless clearly justified.
+
+---
+
+## Functional Requirements for Calendar Agent
+
+The Calendar Agent should support advisor-facing use cases such as:
+
+1. Bill reminder lookup
+   - “Show upcoming bill reminders for this customer”
+   - “Does this customer have any payment due this week?”
+
+2. Investment review reminder
+   - “When is the next portfolio review?”
+   - “Create a reminder to review this customer’s portfolio next month”
+
+3. Retirement planning alert
+   - “Does this customer need a retirement review?”
+   - “Show retirement-related lifecycle alerts”
+
+4. Lifecycle trigger
+   - Birthday milestone
+   - Policy renewal
+   - Large deposit maturity
+   - SIP review
+   - Retirement age milestone
+   - Customer inactivity follow-up
+
+5. Advisor follow-up reminder
+   - “Remind me to call this customer tomorrow”
+   - “Show my pending follow-ups for today”
+
+---
+
+## Backend Implementation Expectations
+
+Implement the backend in Python using the existing backend framework.
+
+If the repository already has an agent/tool architecture, add Calendar Agent into that structure.
+
+If no agent framework exists, create a lightweight and simple structure such as:
+
+```text
+backend/
+  agents/
+    calendar_agent.py
+  services/
+    calendar_service.py
+  models/
+    calendar_models.py
+  routes/
+    calendar_routes.py
+  data/
+    calendar_mock_data.py
+````
+
+But adapt this based on the actual repository structure.
+
+Backend should include:
+
+1. CalendarAgent class or equivalent function-based implementation
+2. Calendar service layer
+3. Mock data source if real DB/calendar integration is not available
+4. API endpoints for:
+
+   * Get upcoming reminders
+   * Get customer lifecycle alerts
+   * Create advisor follow-up reminder
+   * Ask Calendar Agent a natural language query
+5. Clean request/response models
+6. Error handling
+7. Logging
+8. Unit tests where practical
+
+Example APIs may include:
+
+```text
+GET  /api/calendar/reminders?advisor_id=&customer_id=
+GET  /api/calendar/lifecycle-alerts?customer_id=
+POST /api/calendar/reminders
+POST /api/agents/calendar/query
+```
+
+Use existing API naming conventions if different.
+
+---
+
+## Frontend Implementation Expectations
+
+Integrate the Calendar Agent into the existing React chat UI.
+
+Frontend should include:
+
+1. Calendar Agent option in the chat interface
+2. Ability to send a query to the Calendar Agent
+3. Display reminder cards or structured responses
+4. Display lifecycle alerts clearly
+5. Loading and error states
+6. Minimal but clean UI changes
+7. Reuse existing components, hooks, API clients, styles, and state management
+
+Example UI behavior:
+
+* Advisor selects or invokes “Calendar Agent”
+* Advisor asks: “Show upcoming reviews for customer 123”
+* UI sends request to backend Calendar Agent endpoint
+* Backend returns structured response
+* Chat UI displays:
+
+  * Summary answer
+  * Reminder list
+  * Alert cards
+  * Suggested next actions
+
+---
+
+## Agent Behavior Expectations
+
+Calendar Agent should not only return raw reminders. It should provide advisor-friendly reasoning and next-best-actions.
+
+Example response:
+
+```json
+{
+  "summary": "This customer has 3 upcoming calendar events in the next 30 days.",
+  "reminders": [
+    {
+      "type": "Investment Review",
+      "due_date": "2026-05-20",
+      "priority": "High",
+      "description": "Quarterly portfolio review is due."
+    }
+  ],
+  "lifecycle_alerts": [
+    {
+      "type": "Retirement Planning",
+      "trigger": "Customer is approaching retirement milestone.",
+      "recommendation": "Schedule retirement planning review."
+    }
+  ],
+  "suggested_actions": [
+    "Schedule portfolio review call",
+    "Send retirement planning checklist",
+    "Review pending bill payments"
+  ]
+}
+```
+
+---
+
+## Pareto Principle Instruction
+
+Apply the Pareto Principle.
+
+Focus on the 20% of implementation that delivers 80% business value.
+
+Prioritize:
+
+1. Working end-to-end flow
+2. Clean backend API
+3. Simple Calendar Agent logic
+4. Useful mock data
+5. Chat UI integration
+6. Clear demo scenario
+7. Easy extension later
+
+Avoid:
+
+1. Over-engineered multi-agent orchestration
+2. Complex calendar provider integration unless already present
+3. Heavy database schema changes unless required
+4. Unnecessary UI redesign
+5. Introducing too many new libraries
+6. Complex scheduling engines in the first version
+
+The goal is to create a high-quality, demo-ready implementation that can become a reference pattern for other agents.
+
+---
+
+## Clarifying Questions Section
+
+Before implementation, identify and list important clarifying questions.
+
+Group them under:
+
+### Product Questions
+
+Examples:
+
+1. Who is the primary user: bank advisor, branch manager, relationship manager, or customer?
+2. Should reminders be advisor-specific, customer-specific, or both?
+3. What are the most important calendar use cases for the first demo?
+4. Should the agent only read reminders or also create/update/delete reminders?
+5. Should the agent recommend next actions or only display alerts?
+
+### Data Questions
+
+Examples:
+
+1. Where will reminder data come from?
+2. Is there an existing customer profile API?
+3. Is there an existing portfolio/investment review date available?
+4. Are lifecycle triggers already stored somewhere?
+5. Should we use mock data for the first version?
+
+### Integration Questions
+
+Examples:
+
+1. Does the existing chatbot support multiple agents?
+2. How does the UI currently route messages to backend services?
+3. Is there already an agent registry or router?
+4. How is advisor/customer context passed to the backend?
+5. Is authentication already handled?
+
+### Technical Design Questions
+
+Examples:
+
+1. Should Calendar Agent be implemented as a tool, service, or independent agent?
+2. Should natural language parsing be rule-based or LLM-based?
+3. Should reminders be stored in memory, file, database, or existing backend storage?
+4. Should responses be plain text, structured JSON, or both?
+5. What test coverage is expected?
+
+### Compliance and Risk Questions
+
+Examples:
+
+1. Can the agent show sensitive customer financial events?
+2. Should recommendations include disclaimers?
+3. Should all actions be audit logged?
+4. Should advisor-created reminders require confirmation?
+5. Are there restrictions on storing customer lifecycle triggers?
+
+---
+
+## Design Questions to Get Clarified
+
+Ask the project team these questions before finalizing the implementation:
+
+1. What is the expected demo journey for the Calendar Agent?
+2. Should the agent work for one selected customer or across all advisor customers?
+3. What are the top 3 calendar alerts that leadership wants to see?
+4. Should this agent integrate with Outlook, Google Calendar, internal calendar, or only app-level reminders?
+5. Should the first version support creating reminders, or only viewing them?
+6. What customer attributes are available for lifecycle triggers?
+7. Should the Calendar Agent use an LLM to interpret queries, or is rule-based intent matching acceptable for MVP?
+8. What is the existing chat message schema?
+9. How are other agents expected to plug into the chatbot?
+10. What is the expected response format for the chat UI?
+11. Are there existing backend service patterns we must follow?
+12. Are there enterprise logging, audit, or compliance requirements?
+13. Should reminder actions be persisted permanently?
+14. What role-based access control is required?
+15. What does “done” mean for the first working demo?
+
+---
+
+## Expected Deliverables
+
+After repository analysis and implementation, provide:
+
+1. Summary of existing architecture
+2. Files changed
+3. New files added
+4. Backend implementation details
+5. Frontend implementation details
+6. API contract
+7. Example request/response payloads
+8. Test instructions
+9. How to run locally
+10. Demo script
+11. Known limitations
+12. Future enhancements
+
+---
+
+## Implementation Quality Bar
+
+Think like a senior engineer building something that will be reviewed by architects and reused by other teams.
+
+The solution should be:
+
+1. Simple
+2. Working
+3. Extensible
+4. Easy to explain
+5. Aligned with existing codebase
+6. Safe for banking/advisor use cases
+7. Demo-ready
+8. Not over-engineered
+
+Do not just provide theoretical design.
+
+Provide real working code changes based on the repository.
+
+If any required information is missing, make reasonable assumptions, clearly document them, and continue with the best possible implementation.
+
+````
+
+---
+
+## Why This Prompt Is Better
+
+Your original prompt has a strong idea, but it mixes product vision, coding request, architecture request, and clarification request in one paragraph. The improved version makes the agent understand:
+
+1. **What to build** — Calendar Agent  
+2. **Where to build** — existing Python backend and React chat UI  
+3. **How to build** — reuse existing architecture  
+4. **What not to overbuild** — Pareto/MVP guidance  
+5. **What questions to ask** — product, data, integration, compliance  
+6. **What output is expected** — working code, tests, README, demo flow  
+
+---
+
+## Even Shorter Version for Coding Agent
+
+Use this if the zero-shot task input has length limits:
+
+```text
+You are a senior full-stack engineer.
+
+We have an existing AI chatbot for bank advisors. We are adding specialized agents such as Market Summary Agent, Account 360 Agent, and Calendar Agent. My scope is to build the Calendar Agent and integrate it into the existing chat UI.
+
+Analyze the full repository first. Understand the backend framework, frontend framework, chatbot message flow, existing agent/tool patterns, API structure, folder structure, libraries, and coding conventions.
+
+Build a working Calendar Agent using Python backend and React frontend, reusing the existing architecture and libraries wherever possible.
+
+Calendar Agent use cases:
+- Bill reminders
+- Investment review reminders
+- Retirement planning alerts
+- Customer lifecycle triggers
+- Advisor follow-up reminders
+
+Implement:
+- Backend Calendar Agent/service
+- API endpoints
+- Mock data or existing data integration
+- React chat UI integration
+- Structured response rendering
+- Error/loading states
+- Tests where practical
+- README/demo instructions
+
+Apply Pareto Principle:
+Focus on the 20% of work that gives 80% impact. Prioritize a working end-to-end demo, clean API, simple useful logic, and easy extensibility. Avoid over-engineering, unnecessary frameworks, complex calendar provider integration, and large UI redesign.
+
+Before coding, list clarifying questions under:
+1. Product questions
+2. Data questions
+3. Integration questions
+4. Technical design questions
+5. Compliance/risk questions
+
+Then proceed with reasonable assumptions and implement the best possible working solution.
+
+Expected output:
+1. Architecture analysis
+2. Assumptions
+3. Files changed
+4. Code implementation
+5. API contracts
+6. UI behavior
+7. Test instructions
+8. Demo script
+9. Known limitations
+10. Future enhancements
+
+Think like a senior engineer building a reference implementation for other agents.
+````
+
+---
+
+## Best Demo Scenario to Include
+
+You can add this to make the solution more impressive:
+
+```text
+Create one demo flow:
+
+Advisor opens chatbot and selects customer ID CUST-1001.
+
+Advisor asks:
+“Show upcoming calendar alerts for this customer.”
+
+Calendar Agent responds:
+- Portfolio review due in 7 days
+- Credit card bill due in 3 days
+- Customer approaching retirement milestone
+- Suggested action: schedule investment review call
+
+Advisor asks:
+“Create a follow-up reminder for next Monday.”
+
+System creates a reminder and confirms it in the chat UI.
+```
+
+This gives the coding agent a clear “happy path” to implement and makes the demo easy for judges or reviewers to understand.
