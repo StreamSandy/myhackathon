@@ -1,3 +1,357 @@
+html pages
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Executive Daily Application Health Dashboard</title>
+</head>
+<body style="margin:0; padding:0; background:#EEF2F6; font-family:Arial, Helvetica, sans-serif; color:#16202A;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#EEF2F6; margin:0; padding:0;">
+    <tr>
+      <td align="center" style="padding:28px 12px;">
+        <table role="presentation" width="860" cellspacing="0" cellpadding="0" border="0" style="width:100%; max-width:860px; background:#FFFFFF; border:1px solid #D6DEE8; border-radius:14px; overflow:hidden; box-shadow:0 8px 24px rgba(16,24,40,0.08);">
+
+          <!-- Premium Header -->
+          <tr>
+            <td style="padding:0;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#102A43;">
+                <tr>
+                  <td style="padding:26px 30px;">
+                    <div style="font-size:12px; letter-spacing:1.4px; text-transform:uppercase; color:#9FB3C8; font-weight:bold;">
+                      Executive Operations Brief
+                    </div>
+                    <div style="font-size:28px; line-height:1.2; font-weight:bold; color:#FFFFFF; margin-top:6px;">
+                      Daily Application Health Dashboard
+                    </div>
+                    <div style="font-size:14px; color:#D9E2EC; margin-top:8px;">
+                      Production Environment · 12 July 2026 · Data cut-off: 6:00 PM IST
+                    </div>
+                  </td>
+                  <td align="right" valign="middle" style="padding:26px 30px;">
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                      <tr>
+                        <td style="background:#F6C343; color:#5C3B00; padding:8px 14px; border-radius:18px; font-size:12px; font-weight:bold;">
+                          ATTENTION REQUIRED
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="right" style="padding-top:8px; font-size:12px; color:#BCCCDC;">
+                          API Platform &amp; Shared Services
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Executive Snapshot -->
+          <tr>
+            <td style="padding:24px 30px 12px 30px;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#FFF8E8; border:1px solid #F1D999; border-radius:10px;">
+                <tr>
+                  <td style="padding:18px 20px;">
+                    <div style="font-size:12px; text-transform:uppercase; letter-spacing:1px; color:#8A5A00; font-weight:bold;">
+                      Executive Snapshot
+                    </div>
+                    <div style="font-size:20px; line-height:1.4; font-weight:bold; color:#243B53; margin-top:6px;">
+                      Platform remains stable overall; API Store latency is the only material concern.
+                    </div>
+                    <div style="font-size:14px; line-height:1.6; color:#52667A; margin-top:8px;">
+                      No production outage or SLA breach has been observed. One customer-facing workflow is experiencing slower response times and is under active investigation.
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- KPI Cards Row 1 -->
+          <tr>
+            <td style="padding:12px 25px 0 25px;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                  <td width="25%" style="padding:5px;">
+                    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border:1px solid #D7E3EC; border-radius:10px; background:#FBFDFF;">
+                      <tr><td style="padding:16px;">
+                        <div style="font-size:11px; text-transform:uppercase; letter-spacing:.7px; color:#718096;">Availability</div>
+                        <div style="font-size:27px; font-weight:bold; color:#102A43; margin-top:5px;">99.96%</div>
+                        <div style="font-size:12px; color:#1F7A4D; margin-top:6px; font-weight:bold;">Healthy · Stable</div>
+                        <div style="font-size:11px; color:#8A9BA8; margin-top:4px;">Prev. day: 99.95%</div>
+                      </td></tr>
+                    </table>
+                  </td>
+                  <td width="25%" style="padding:5px;">
+                    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border:1px solid #D7E3EC; border-radius:10px; background:#FBFDFF;">
+                      <tr><td style="padding:16px;">
+                        <div style="font-size:11px; text-transform:uppercase; letter-spacing:.7px; color:#718096;">Success Rate</div>
+                        <div style="font-size:27px; font-weight:bold; color:#102A43; margin-top:5px;">99.61%</div>
+                        <div style="font-size:12px; color:#1F7A4D; margin-top:6px; font-weight:bold;">Healthy · Improving</div>
+                        <div style="font-size:11px; color:#8A9BA8; margin-top:4px;">Prev. day: 99.42%</div>
+                      </td></tr>
+                    </table>
+                  </td>
+                  <td width="25%" style="padding:5px;">
+                    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border:1px solid #F0D49A; border-radius:10px; background:#FFF9EC;">
+                      <tr><td style="padding:16px;">
+                        <div style="font-size:11px; text-transform:uppercase; letter-spacing:.7px; color:#8A5A00;">Average p95</div>
+                        <div style="font-size:27px; font-weight:bold; color:#102A43; margin-top:5px;">612 ms</div>
+                        <div style="font-size:12px; color:#A66100; margin-top:6px; font-weight:bold;">Attention · Deteriorating</div>
+                        <div style="font-size:11px; color:#8A9BA8; margin-top:4px;">Prev. day: 470 ms</div>
+                      </td></tr>
+                    </table>
+                  </td>
+                  <td width="25%" style="padding:5px;">
+                    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border:1px solid #F0D49A; border-radius:10px; background:#FFF9EC;">
+                      <tr><td style="padding:16px;">
+                        <div style="font-size:11px; text-transform:uppercase; letter-spacing:.7px; color:#8A5A00;">Active Incidents</div>
+                        <div style="font-size:27px; font-weight:bold; color:#102A43; margin-top:5px;">1</div>
+                        <div style="font-size:12px; color:#A66100; margin-top:6px; font-weight:bold;">Minor · In progress</div>
+                        <div style="font-size:11px; color:#8A9BA8; margin-top:4px;">No sev-1 / sev-2 incidents</div>
+                      </td></tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Health distribution -->
+          <tr>
+            <td style="padding:16px 30px 4px 30px;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#F7FAFC; border:1px solid #E2E8F0; border-radius:10px;">
+                <tr>
+                  <td align="center" width="25%" style="padding:14px 8px; border-right:1px solid #E2E8F0;">
+                    <div style="font-size:21px; font-weight:bold; color:#1F7A4D;">3</div>
+                    <div style="font-size:12px; color:#64748B; margin-top:3px;">Healthy Apps</div>
+                  </td>
+                  <td align="center" width="25%" style="padding:14px 8px; border-right:1px solid #E2E8F0;">
+                    <div style="font-size:21px; font-weight:bold; color:#A66100;">1</div>
+                    <div style="font-size:12px; color:#64748B; margin-top:3px;">Needs Attention</div>
+                  </td>
+                  <td align="center" width="25%" style="padding:14px 8px; border-right:1px solid #E2E8F0;">
+                    <div style="font-size:21px; font-weight:bold; color:#B42318;">0</div>
+                    <div style="font-size:12px; color:#64748B; margin-top:3px;">Critical Apps</div>
+                  </td>
+                  <td align="center" width="25%" style="padding:14px 8px;">
+                    <div style="font-size:21px; font-weight:bold; color:#475569;">0</div>
+                    <div style="font-size:12px; color:#64748B; margin-top:3px;">SLA Breaches</div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Section title -->
+          <tr>
+            <td style="padding:24px 30px 10px 30px;">
+              <div style="font-size:18px; font-weight:bold; color:#102A43;">Application Performance Overview</div>
+              <div style="font-size:12px; color:#7B8794; margin-top:4px;">Sorted by operational risk and business relevance</div>
+            </td>
+          </tr>
+
+          <!-- Application Cards -->
+          <tr>
+            <td style="padding:0 30px 4px 30px;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+
+                <tr>
+                  <td style="padding:0 0 10px 0;">
+                    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border:1px solid #F0D49A; border-left:6px solid #D99A00; border-radius:10px; background:#FFFCF5;">
+                      <tr>
+                        <td width="24%" style="padding:16px;">
+                          <div style="font-size:16px; font-weight:bold; color:#102A43;">API Store</div>
+                          <div style="font-size:12px; color:#A66100; margin-top:5px; font-weight:bold;">ATTENTION REQUIRED</div>
+                        </td>
+                        <td width="15%" align="center" style="padding:16px;">
+                          <div style="font-size:11px; color:#7B8794;">Availability</div>
+                          <div style="font-size:16px; font-weight:bold; margin-top:4px;">99.91%</div>
+                        </td>
+                        <td width="15%" align="center" style="padding:16px;">
+                          <div style="font-size:11px; color:#7B8794;">Success</div>
+                          <div style="font-size:16px; font-weight:bold; margin-top:4px;">99.22%</div>
+                        </td>
+                        <td width="15%" align="center" style="padding:16px;">
+                          <div style="font-size:11px; color:#7B8794;">p95</div>
+                          <div style="font-size:16px; font-weight:bold; color:#A66100; margin-top:4px;">1,120 ms</div>
+                        </td>
+                        <td width="31%" style="padding:16px;">
+                          <div style="font-size:11px; color:#7B8794;">Executive Note</div>
+                          <div style="font-size:13px; line-height:1.5; margin-top:4px;">Latency increased after 3:20 PM. No outage; investigation in progress.</div>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style="padding:0 0 10px 0;">
+                    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border:1px solid #CDE8D8; border-left:6px solid #2E8B57; border-radius:10px; background:#F8FCFA;">
+                      <tr>
+                        <td width="24%" style="padding:16px;">
+                          <div style="font-size:16px; font-weight:bold; color:#102A43;">API Gateway</div>
+                          <div style="font-size:12px; color:#1F7A4D; margin-top:5px; font-weight:bold;">HEALTHY</div>
+                        </td>
+                        <td width="15%" align="center" style="padding:16px;">
+                          <div style="font-size:11px; color:#7B8794;">Availability</div>
+                          <div style="font-size:16px; font-weight:bold; margin-top:4px;">99.99%</div>
+                        </td>
+                        <td width="15%" align="center" style="padding:16px;">
+                          <div style="font-size:11px; color:#7B8794;">Success</div>
+                          <div style="font-size:16px; font-weight:bold; margin-top:4px;">99.93%</div>
+                        </td>
+                        <td width="15%" align="center" style="padding:16px;">
+                          <div style="font-size:11px; color:#7B8794;">p95</div>
+                          <div style="font-size:16px; font-weight:bold; margin-top:4px;">285 ms</div>
+                        </td>
+                        <td width="31%" style="padding:16px;">
+                          <div style="font-size:11px; color:#7B8794;">Executive Note</div>
+                          <div style="font-size:13px; line-height:1.5; margin-top:4px;">Operating within expected availability and latency thresholds.</div>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style="padding:0 0 10px 0;">
+                    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border:1px solid #CDE8D8; border-left:6px solid #2E8B57; border-radius:10px; background:#F8FCFA;">
+                      <tr>
+                        <td width="24%" style="padding:16px;">
+                          <div style="font-size:16px; font-weight:bold; color:#102A43;">Schema Registry</div>
+                          <div style="font-size:12px; color:#1F7A4D; margin-top:5px; font-weight:bold;">HEALTHY</div>
+                        </td>
+                        <td width="15%" align="center" style="padding:16px;">
+                          <div style="font-size:11px; color:#7B8794;">Availability</div>
+                          <div style="font-size:16px; font-weight:bold; margin-top:4px;">100.00%</div>
+                        </td>
+                        <td width="15%" align="center" style="padding:16px;">
+                          <div style="font-size:11px; color:#7B8794;">Success</div>
+                          <div style="font-size:16px; font-weight:bold; margin-top:4px;">99.98%</div>
+                        </td>
+                        <td width="15%" align="center" style="padding:16px;">
+                          <div style="font-size:11px; color:#7B8794;">p95</div>
+                          <div style="font-size:16px; font-weight:bold; margin-top:4px;">198 ms</div>
+                        </td>
+                        <td width="31%" style="padding:16px;">
+                          <div style="font-size:11px; color:#7B8794;">Executive Note</div>
+                          <div style="font-size:13px; line-height:1.5; margin-top:4px;">Performance improved and no exceptions were observed.</div>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style="padding:0;">
+                    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border:1px solid #CDE8D8; border-left:6px solid #2E8B57; border-radius:10px; background:#F8FCFA;">
+                      <tr>
+                        <td width="24%" style="padding:16px;">
+                          <div style="font-size:16px; font-weight:bold; color:#102A43;">Mock Service</div>
+                          <div style="font-size:12px; color:#1F7A4D; margin-top:5px; font-weight:bold;">HEALTHY</div>
+                        </td>
+                        <td width="15%" align="center" style="padding:16px;">
+                          <div style="font-size:11px; color:#7B8794;">Availability</div>
+                          <div style="font-size:16px; font-weight:bold; margin-top:4px;">99.95%</div>
+                        </td>
+                        <td width="15%" align="center" style="padding:16px;">
+                          <div style="font-size:11px; color:#7B8794;">Success</div>
+                          <div style="font-size:16px; font-weight:bold; margin-top:4px;">99.31%</div>
+                        </td>
+                        <td width="15%" align="center" style="padding:16px;">
+                          <div style="font-size:11px; color:#7B8794;">p95</div>
+                          <div style="font-size:16px; font-weight:bold; margin-top:4px;">445 ms</div>
+                        </td>
+                        <td width="31%" style="padding:16px;">
+                          <div style="font-size:11px; color:#7B8794;">Executive Note</div>
+                          <div style="font-size:13px; line-height:1.5; margin-top:4px;">Stable and within the agreed operating range.</div>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+
+              </table>
+            </td>
+          </tr>
+
+          <!-- Risk and Action Panel -->
+          <tr>
+            <td style="padding:24px 30px 10px 30px;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                  <td width="50%" valign="top" style="padding-right:6px;">
+                    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#FFF8E8; border:1px solid #F0D49A; border-radius:10px;">
+                      <tr><td style="padding:16px;">
+                        <div style="font-size:13px; text-transform:uppercase; letter-spacing:.8px; color:#8A5A00; font-weight:bold;">Primary Risk</div>
+                        <div style="font-size:15px; font-weight:bold; color:#243B53; margin-top:7px;">API Store latency degradation</div>
+                        <div style="font-size:13px; line-height:1.6; color:#52667A; margin-top:6px;">
+                          Slower internal page loads may affect productivity if the trend continues.
+                        </div>
+                      </td></tr>
+                    </table>
+                  </td>
+                  <td width="50%" valign="top" style="padding-left:6px;">
+                    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#EEF6FF; border:1px solid #B9D6F2; border-radius:10px;">
+                      <tr><td style="padding:16px;">
+                        <div style="font-size:13px; text-transform:uppercase; letter-spacing:.8px; color:#245B88; font-weight:bold;">Current Action</div>
+                        <div style="font-size:15px; font-weight:bold; color:#243B53; margin-top:7px;">Platform team investigating</div>
+                        <div style="font-size:13px; line-height:1.6; color:#52667A; margin-top:6px;">
+                          Reviewing database pool saturation and recent deployment changes. Next update: 8:00 PM IST.
+                        </div>
+                      </td></tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Leadership Takeaways -->
+          <tr>
+            <td style="padding:16px 30px 26px 30px;">
+              <div style="font-size:18px; font-weight:bold; color:#102A43; margin-bottom:10px;">Leadership Takeaways</div>
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                  <td style="padding:11px 14px; background:#F3FAF6; border-left:4px solid #2E8B57; font-size:14px; line-height:1.5;">
+                    <strong>Stable:</strong> Three of four critical platform services are healthy and operating within expected thresholds.
+                  </td>
+                </tr>
+                <tr><td style="height:8px;"></td></tr>
+                <tr>
+                  <td style="padding:11px 14px; background:#FFF8E8; border-left:4px solid #D99A00; font-size:14px; line-height:1.5;">
+                    <strong>Watch:</strong> API Store performance has deteriorated but remains available, with no SLA breach.
+                  </td>
+                </tr>
+                <tr><td style="height:8px;"></td></tr>
+                <tr>
+                  <td style="padding:11px 14px; background:#F4F7FA; border-left:4px solid #6B7C93; font-size:14px; line-height:1.5;">
+                    <strong>Next:</strong> Continue active monitoring and confirm whether the issue is linked to database saturation or the latest release.
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="padding:18px 30px; background:#F7FAFC; border-top:1px solid #D8E1EA; font-size:11px; color:#7B8794; line-height:1.6;">
+              Data sources: Application monitoring, API metrics, infrastructure telemetry, and incident management platform.<br>
+              Report owner: API Platform &amp; Shared Services · Grey values indicate unavailable or insufficient data · Internal use only.
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+
+========================
+
 07-may26
 ======================
 
