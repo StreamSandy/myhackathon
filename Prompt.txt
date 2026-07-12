@@ -1,3 +1,376 @@
+07-may26
+======================
+
+You are an expert executive-communication designer, application performance analyst, and HTML email developer.
+
+## Objective
+
+Create a professional daily application-health and performance dashboard in HTML that can be copied directly into an email sent to executive leaders and senior stakeholders.
+
+The dashboard must communicate the overall health of applications quickly, clearly, and accurately. A senior leader should be able to understand the current status, major risks, business impact, and required actions within 30–60 seconds.
+
+## Input
+
+I will provide daily application-health data that may include:
+
+* Application or service name
+* Overall health status
+* Availability percentage
+* Success rate
+* Error rate
+* Response-time percentiles such as p50, p80, p90, p95 and p99
+* Current response time
+* Transaction volume
+* CPU usage
+* Memory usage
+* Infrastructure status
+* Database status
+* API status
+* Number of incidents
+* Severity of incidents
+* SLA or SLO compliance
+* Previous-day values
+* Trends
+* Business impact
+* Remarks
+* Owner
+* Current action
+* Expected resolution time
+
+The input may be structured as JSON, CSV, a markdown table, plain text, or bullet points. Analyse the input format automatically and generate the dashboard without requiring additional clarification.
+
+## Primary Task
+
+Generate a complete, polished, email-compatible HTML dashboard for the supplied daily data.
+
+The output must:
+
+1. Present an executive summary at the top.
+2. Show the overall application-health status prominently.
+3. Display the most important KPIs in compact summary cards.
+4. Include an application-level health table.
+5. Highlight incidents, degraded services, SLA breaches, risks, and required actions.
+6. Show meaningful comparison with the previous day when historical values are available.
+7. Use clear colour differentiation without relying only on colour.
+8. Include a concise executive commentary generated from the data.
+9. Be readable in Outlook, Gmail, mobile email clients, and laptop browsers.
+10. Require no JavaScript or external dependency.
+
+## Status and Colour Logic
+
+Do not apply one universal threshold to every metric. Determine whether a higher or lower value is desirable for each KPI.
+
+### For metrics where higher is better
+
+Examples:
+
+* Availability
+* Success rate
+* SLA compliance
+* Health score
+
+Use the following default thresholds unless specific thresholds are supplied:
+
+* Green — value is at or above 95%
+* Amber — value is at or above 80% and below 95%
+* Red — value is below 80%
+* Grey — data is unavailable or insufficient
+
+### For metrics where lower is better
+
+Examples:
+
+* Error rate
+* Response time
+* CPU utilisation
+* Memory utilisation
+* Incident count
+
+Compare the actual value against the supplied target, baseline, or threshold.
+
+Use:
+
+* Green — within the normal or target range
+* Amber — approaching or moderately exceeding the threshold
+* Red — materially exceeding the threshold
+* Grey — target or data is unavailable
+
+### Response-time percentile logic
+
+When p80 and p95 reference values are available:
+
+* Green — actual response time is at or below p80
+* Amber — actual response time is above p80 and at or below p95
+* Red — actual response time is above p95
+* Grey — percentile data is unavailable
+
+If a metric’s direction or threshold cannot be determined confidently, do not invent a misleading status. Display it as grey and state that the threshold was not provided.
+
+## Executive Summary
+
+At the top of the dashboard, include:
+
+* Reporting date
+* Overall health: Healthy, Attention Required, Degraded, or Critical
+* Number of healthy applications
+* Number of applications requiring attention
+* Number of degraded or critical applications
+* Number of active incidents
+* Number of SLA or SLO breaches
+* Most important business impact
+* Main action or decision required from leadership, when applicable
+
+Determine the overall status using the most severe material condition rather than simply averaging all metrics.
+
+Suggested logic:
+
+* Critical — major outage, severe business impact, or critical incident
+* Degraded — one or more important services are materially affected
+* Attention Required — amber conditions, emerging risks, or minor SLA concerns
+* Healthy — all critical services are operating within acceptable limits
+
+## Dashboard Structure
+
+Create the dashboard in the following order:
+
+### 1. Header
+
+Include:
+
+* “Daily Application Health Report”
+* Reporting date
+* Reporting period or data cut-off time
+* Environment, such as Production
+* Optional report owner or team name
+
+### 2. Overall Status Banner
+
+Show:
+
+* Overall health status
+* One-sentence executive assessment
+* Major business impact, if any
+
+### 3. KPI Summary Cards
+
+Include the most relevant available KPIs, such as:
+
+* Availability
+* Success rate
+* p95 response time
+* Error rate
+* Transaction volume
+* Active incidents
+* SLA compliance
+* Applications requiring attention
+
+Show:
+
+* Current value
+* Status label
+* Previous value, when available
+* Directional trend: Improving, Stable, or Deteriorating
+
+Do not use decorative arrows or colours alone. Include textual trend labels.
+
+### 4. Application Health Table
+
+Use columns similar to:
+
+* Application
+* Overall Status
+* Availability
+* Success Rate
+* p95 Response Time
+* Error Rate
+* Incidents
+* Trend
+* Business Impact
+* Action or Remark
+
+Adjust the columns based on available input data. Do not create empty or meaningless columns.
+
+Sort the table in this order:
+
+1. Critical
+2. Degraded
+3. Attention Required
+4. Healthy
+5. Unknown
+
+### 5. Exceptions and Risks
+
+Show only meaningful exceptions, including:
+
+* Red conditions
+* Amber conditions
+* SLA or SLO breaches
+* Significant performance degradation
+* New incidents
+* Recurring incidents
+* Capacity concerns
+* Data-quality gaps
+* Items requiring leadership awareness
+
+For every exception, state:
+
+* What happened
+* Business or customer impact
+* Current action
+* Owner, when supplied
+* Expected resolution time, when supplied
+
+### 6. Executive Commentary
+
+Generate three concise sections:
+
+* What is healthy
+* What requires attention
+* What happens next
+
+Avoid technical jargon unless it is necessary. Translate technical issues into business impact wherever possible.
+
+### 7. Footer
+
+Include:
+
+* Data cut-off time
+* Data sources, when supplied
+* Report owner
+* A note that grey values indicate missing or insufficient data
+* Optional confidentiality statement
+
+## HTML and Email Compatibility Requirements
+
+The HTML must be suitable for copying into an executive email.
+
+Use:
+
+* HTML tables for layout
+* Inline CSS
+* A maximum content width between 700 and 900 pixels
+* Clear typography
+* Adequate spacing
+* Simple borders
+* Email-safe fonts such as Arial, Helvetica, or sans-serif
+* Text labels alongside colour indicators
+* High-contrast, accessible colour combinations
+* Responsive behaviour suitable for mobile screens
+* Professional and restrained styling
+
+Do not use:
+
+* JavaScript
+* SVG
+* Canvas
+* CSS Grid
+* Complex Flexbox layouts
+* External CSS files
+* External fonts
+* External icons
+* Interactive controls
+* Hover-dependent content
+* Unsupported email-client styling
+* Excessive gradients, shadows, animations, or decorative elements
+
+Use Unicode symbols only when they are likely to render reliably. Prefer plain text labels such as “Healthy”, “Attention”, “Degraded”, and “Critical”.
+
+## Design Style
+
+The dashboard should look:
+
+* Executive-friendly
+* Clean
+* Modern
+* Compact
+* Professional
+* Easy to scan
+* Suitable for daily reuse
+
+Use a neutral background with restrained status colours.
+
+Recommended colours:
+
+* Green: `#1F7A4D`
+* Light green background: `#EAF6EF`
+* Amber: `#A66100`
+* Light amber background: `#FFF4D6`
+* Red: `#B42318`
+* Light red background: `#FDECEC`
+* Grey: `#667085`
+* Light grey background: `#F2F4F7`
+* Dark text: `#1D2939`
+* Border: `#D0D5DD`
+
+Ensure that each coloured status also contains a visible text label.
+
+## Data Analysis Rules
+
+Before producing the HTML:
+
+1. Validate the input data.
+2. Identify missing values.
+3. Detect inconsistent units.
+4. Determine whether higher or lower values are better.
+5. Apply supplied thresholds before default thresholds.
+6. Compare with previous-day values when available.
+7. Identify material deterioration.
+8. Separate symptoms from root causes.
+9. Separate technical impact from business impact.
+10. Avoid claiming that an issue is resolved unless the data explicitly confirms it.
+11. Do not invent owners, incidents, thresholds, causes, or resolution times.
+12. Clearly mark unavailable data as “N/A”.
+13. Use consistent units throughout the report.
+14. Round values sensibly without hiding meaningful changes.
+
+## Output Format
+
+Return the result in exactly three sections:
+
+### Section 1 — Data Quality and Assumptions
+
+Briefly list:
+
+* Missing information
+* Threshold assumptions
+* Unit assumptions
+* Any metric whose direction could not be determined
+
+Keep this section outside the HTML so that I can review it before sending.
+
+### Section 2 — Executive Insights
+
+Provide five or fewer concise observations covering:
+
+* Overall status
+* Most important improvement
+* Most important deterioration
+* Main business risk
+* Required next action
+
+Keep this section outside the HTML.
+
+### Section 3 — Final HTML
+
+Return one complete HTML code block containing:
+
+* All HTML
+* All inline styles
+* No explanatory text inside the code block
+* No placeholders unless the source data is missing
+* No JavaScript or external dependencies
+
+The HTML must be ready to paste into an email or save as an `.html` file.
+
+## Input Data
+
+Paste the daily application-health data below:
+
+[INSERT DAILY APPLICATION HEALTH DATA HERE]
+
+
+================================================================
+
 may 06
 
 Hi Team,
